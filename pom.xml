@@ -7,17 +7,29 @@
     <artifactId>hua-shop</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>hua-shop</name>
+    <name>${project.artifactId}</name>
     <description>版本管理父工程</description>
-
     <packaging>pom</packaging>
+
+    <modules>
+        <module>shop-gmall-core</module>
+        <module>shop-gmall-admin</module>
+        <module>shop-pms</module>
+        <module>shop-oms</module>
+        <module>shop-ums</module>
+        <module>shop-wms</module>
+        <module>shop-sms</module>
+    </modules>
 
     <!--  版本控制  -->
     <properties>
-        <!-- 项目版本 -->
-        <spring-alibaba-cloud.version>2.1.0.RELEASE</spring-alibaba-cloud.version>
+        <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
+        <spring-cloud-alibaba.version>0.9.0.RELEASE</spring-cloud-alibaba.version>
         <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
+        <spring-cloud-security.version>2.1.6.RELEASE</spring-cloud-security.version>
         <mybatisPlus.version>3.2.0</mybatisPlus.version>
+        <swagger.version>2.9.2</swagger.version>
+        <java.version>1.8</java.version>
     </properties>
 
     <!--  boot 版本控制  -->
@@ -31,11 +43,17 @@
     <!--  cloud依赖控制  -->
     <dependencyManagement>
         <dependencies>
-            <!-- alibaba cloud-->
+            <!-- spring security-->
             <dependency>
-                <groupId>com.alibaba.cloud</groupId>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+                <version>${spring-cloud-security.version}</version>
+            </dependency>
+            <!-- spring cloud alibaba-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>${spring-alibaba-cloud.version}</version>
+                <version>${spring-cloud-alibaba.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -58,14 +76,57 @@
                 <version>${spring-boot.version}</version>
                 <scope>test</scope>
             </dependency>
+            <!-- swagger2 -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <!-- swagger-ui -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-
+    <build>
+        <finalName>${project.name}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
     <repositories>
+        <!--spring私服-->
         <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
             <url>https://repo.spring.io/milestone</url>
+        </repository>
+        <!--阿里云私服-->
+        <repository>
+            <id>aliyun</id>
+            <name>aliyun</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
         </repository>
     </repositories>
 

@@ -1,0 +1,27 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: @artifactId@
+  cloud:
+    nacos:
+      config:
+        NAMESPACE: 0fe16069-4f79-4272-8684-608871401797
+        group: dev
+        file-extension: yml
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+      discovery:
+        server-addr: ${NACOS-HOST:127.0.0.1}:${NACOS-PORT:8848}
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/guli_sms
+    username: root
+    password: root
+  redis:
+    host: 127.0.0.1
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
